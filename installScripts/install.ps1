@@ -4,20 +4,25 @@ if (-NOT ([Security.Principal.WindowsPrincipal][Security.Principal.WindowsIdenti
     exit 1
 }
 
-Write-Host "[tskr] Building..." -ForegroundColor Cyan
-./gradlew installDist
+$repo = "NoOneWasTaken/tskr"
+$installPath = "C:\Program Files\tskr"
+$zipPath = "$env:TEMP\tskr.zip"
+$extractPath = "$env:TEMP\tskr_extracted"
+
+Write-Host "[tskr] Downloading latest release..." -ForegroundColor Cyan
+Invoke-WebRequest -Uri "https://github.com/$repo/releases/latest/download/tskr.zip" -OutFile $zipPath
 
 Write-Host "[tskr] Installing..." -ForegroundColor Cyan
-$installPath = "C:\Program Files\tskr"
-if (Test-Path $installPath) {
-    Remove-Item -Recurse -Force $installPath
-}
-Copy-Item -Recurse "binary\tskr" "C:\Program Files\tskr"
+if (Test-Path $installPath) { Remove-Item -Recurse -Force $installPath }
+Expand-Archive -Path $zipPath -DestinationPath $extractPath -Force
+$extracted = Get-ChildItem $extractPath | Select-Object -First 1
+Copy-Item -Recurse "$($extracted.FullName)\*" $installPath
+Remove-Item -Recurse -Force $zipPath, $extractPath
 
 Write-Host "[tskr] Adding to PATH..." -ForegroundColor Cyan
 $currentPath = [Environment]::GetEnvironmentVariable("Path", "Machine")
 if ($currentPath -notlike "*tskr*") {
-    [Environment]::SetEnvironmentVariable("Path", "$currentPath;C:\Program Files\tskr\bin", "Machine")
+    [Environment]::SetEnvironmentVariable("Path", "$currentPath;$installPath\bin", "Machine")
 }
 
 Write-Host "[tskr] Done! Restart your terminal and run 'tskr --help' to get started." -ForegroundColor Green

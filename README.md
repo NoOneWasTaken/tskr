@@ -6,7 +6,15 @@
 
 ## Installation
 
-<!-- Add installation instructions here -->
+### Linux / Mac
+```bash
+curl -sSL https://raw.githubusercontent.com/NoOneWasTaken/tskr/main/installScripts/install.sh | bash
+```
+
+### Windows (PowerShell as Administrator)
+```powershell
+irm https://raw.githubusercontent.com/NoOneWasTaken/tskr/main/installScripts/install.ps1 | iex
+```
 
 ## Usage
 
