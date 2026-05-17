@@ -16,7 +16,7 @@ Write-Host "[tskr] Installing..." -ForegroundColor Cyan
 if (Test-Path $installPath) { Remove-Item -Recurse -Force $installPath }
 Expand-Archive -Path $zipPath -DestinationPath $extractPath -Force
 $extracted = Get-ChildItem $extractPath | Select-Object -First 1
-Copy-Item -Recurse "$($extracted.FullName)\*" $installPath
+Copy-Item -Recurse "$($extracted.FullName)\*" $installPath -Force
 Remove-Item -Recurse -Force $zipPath, $extractPath
 
 Write-Host "[tskr] Adding to PATH..." -ForegroundColor Cyan
