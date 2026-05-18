@@ -2,11 +2,13 @@ plugins {
     kotlin("jvm") version "2.3.21"
     kotlin("plugin.serialization") version "2.3.21"
 
+    id("org.graalvm.buildtools.native") version "0.10.6"
+
     application
 }
 
 group = "noonewastaken.tskr"
-version = "1.0.1"
+version = "1.0.2"
 
 repositories {
     mavenCentral()
@@ -40,4 +42,14 @@ dependencies {
 
 kotlin {
     jvmToolchain(25)
+}
+
+graalvmNative {
+    binaries {
+        named("main") {
+            imageName.set("tskr")
+            mainClass.set("noonewastaken.tskr.MainKt")
+            buildArgs.add("--no-fallback")
+        }
+    }
 }
