@@ -2,7 +2,7 @@
 
 > A fast, minimal task manager for your terminal — built with Kotlin.
 
-<!-- Add a demo GIF here -->
+![Demo Video](./demo/demo.gif)
 
 ## Installation
 
