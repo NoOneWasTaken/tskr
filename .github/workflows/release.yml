@@ -34,13 +34,19 @@ jobs:
           distribution: 'graalvm'
           native-image-job-reports: 'true'
 
-      - name: Build native binary
+      - name: Build native binary (Unix)
+        if: runner.os != 'Windows'
+        timeout-minutes: 30
         run: |
-          if [ "$RUNNER_OS" != "Windows" ]; then
-            chmod +x gradlew
-          fi
+          chmod +x gradlew
           ./gradlew nativeCompile
-      
+
+      - name: Build native binary (Windows)
+        if: runner.os == 'Windows'
+        timeout-minutes: 30
+        run: ./gradlew nativeCompile
+
+
 
       - name: Upload binary to release
         uses: softprops/action-gh-release@v2
