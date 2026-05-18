@@ -12,7 +12,7 @@ curl -L "https://github.com/$REPO/releases/latest/download/tskr.zip" -o /tmp/tsk
 echo "[tskr] Installing..."
 sudo rm -rf "$INSTALL_DIR"
 sudo mkdir -p "$INSTALL_DIR"
-sudo unzip -q /tmp/tskr.zip -d /tmp/tskr_extracted
+sudo unzip -o -q /tmp/tskr.zip -d /tmp/tskr_extracted
 sudo cp -r /tmp/tskr_extracted/tskr-*/* "$INSTALL_DIR"
 sudo rm -rf /tmp/tskr.zip /tmp/tskr_extracted
 
