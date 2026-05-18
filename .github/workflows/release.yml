@@ -46,11 +46,13 @@ jobs:
         timeout-minutes: 30
         run: ./gradlew nativeCompile
 
-
+      - name: Rename binary
+        if: runner.os != 'Windows'
+        run: mv build/native/nativeCompile/${{ matrix.binary_name }} build/native/nativeCompile/${{ matrix.asset_name }}
 
       - name: Upload binary to release
         uses: softprops/action-gh-release@v2
         with:
-          files: build/native/nativeCompile/${{ matrix.binary_name }}
+          files: build/native/nativeCompile/${{ matrix.asset_name }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
