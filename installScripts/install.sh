@@ -14,7 +14,7 @@ sudo rm -rf "$INSTALL_DIR"
 sudo mkdir -p "$INSTALL_DIR"
 sudo unzip -q /tmp/tskr.zip -d /tmp/tskr_extracted
 sudo cp -r /tmp/tskr_extracted/tskr-*/* "$INSTALL_DIR"
-rm -rf /tmp/tskr.zip /tmp/tskr_extracted
+sudo rm -rf /tmp/tskr.zip /tmp/tskr_extracted
 
 echo "[tskr] Adding to PATH..."
 sudo ln -sf "$INSTALL_DIR/bin/tskr" "$BIN_DIR/tskr"
