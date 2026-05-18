@@ -7,6 +7,7 @@ on:
 jobs:
   build:
     strategy:
+      fail-fast: false
       matrix:
         os: [ubuntu-latest, macos-latest, windows-latest]
         include:
@@ -33,12 +34,13 @@ jobs:
           distribution: 'graalvm'
           native-image-job-reports: 'true'
 
-      - name: Make gradlew executable
-        if: runner.os != 'Windows'
-        run: chmod +x gradlew
-
       - name: Build native binary
-        run: ./gradlew nativeCompile
+        run: |
+          if [ "$RUNNER_OS" != "Windows" ]; then
+            chmod +x gradlew
+          fi
+          ./gradlew nativeCompile
+      
 
       - name: Upload binary to release
         uses: softprops/action-gh-release@v2
