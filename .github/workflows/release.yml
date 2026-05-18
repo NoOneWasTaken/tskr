@@ -1,0 +1,44 @@
+name: Build Native Binaries
+
+on:
+  release:
+    types: [created]
+
+jobs:
+  build:
+    strategy:
+      matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest]
+        include:
+          - os: ubuntu-latest
+            binary_name: tskr
+            asset_name: tskr-linux
+          - os: macos-latest
+            binary_name: tskr
+            asset_name: tskr-mac
+          - os: windows-latest
+            binary_name: tskr.exe
+            asset_name: tskr.exe
+
+    runs-on: ${{ matrix.os }}
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup GraalVM
+        uses: graalvm/setup-graalvm@v1
+        with:
+          java-version: '25'
+          distribution: 'graalvm'
+          native-image-job-reports: 'true'
+
+      - name: Build native binary
+        run: ./gradlew nativeCompile
+
+      - name: Upload binary to release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: build/native/nativeCompile/${{ matrix.binary_name }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
